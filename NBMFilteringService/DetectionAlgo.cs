@@ -17,7 +17,7 @@ namespace NBMFilteringService
 
         public static void LoadDict()
         {
-            var dict = File.ReadLines("textwords.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+            var dict = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "textwords.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
             DetectionAlgo.textList = dict;
         }
 
