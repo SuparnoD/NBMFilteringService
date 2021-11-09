@@ -24,7 +24,7 @@ namespace NBMFilteringService
         public MainWindow()
         {
             InitializeComponent();
-            MessageProcess.LoadDict();
+            DAO.LoadDict();
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -59,6 +59,57 @@ namespace NBMFilteringService
             });
 
             listView.ItemsSource = DAO.smsList;
+        }
+
+        private void EmailListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message ID",
+                DisplayMemberBinding = new Binding("ID")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Sender",
+                DisplayMemberBinding = new Binding("Sender")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Subject",
+                DisplayMemberBinding = new Binding("Subject")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message Body",
+                DisplayMemberBinding = new Binding("Text")
+            });
+
+            listView.ItemsSource = DAO.emailList;
+        }
+
+        private void TweetListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message ID",
+                DisplayMemberBinding = new Binding("ID")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Sender",
+                DisplayMemberBinding = new Binding("Sender")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message Body",
+                DisplayMemberBinding = new Binding("Text")
+            });
+
+            listView.ItemsSource = DAO.tweetList;
         }
     }
 }

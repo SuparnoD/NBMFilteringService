@@ -10,16 +10,9 @@ namespace NBMFilteringService
 {
     class MessageProcess
     {
-        public static Dictionary<string, string> textList = new Dictionary<string, string>();
         private static bool sms = false;
         private static bool email = false;
         private static bool tweet = false;
-
-        public static void LoadDict()
-        {
-            var dict = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "textwords.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
-            MessageProcess.textList = dict;
-        }
 
         public static void CategoriseMessage(string id)
         {
@@ -28,20 +21,11 @@ namespace NBMFilteringService
                 sms = true;
             } else if (id.StartsWith("E"))
             {
-                /*Email email = new Email();
-                email.ID = id;
-                email.Sender = sender;
-                email.Subject = subject;
-                email.Text = body;
-                DAO.emailList.Add(email);*/
+                email = true;
             } else if (id.StartsWith("T"))
             {
-                /*Tweet tweet = new Tweet();
-                tweet.ID = id;
-                tweet.Sender = sender;
-                tweet.Text = body;
-                DAO.tweetList.Add(tweet);*/
-            }
+                tweet = true;
+            } 
         }
 
         public static void SanitiseMessage(string id, string sender, string subject, string body)
@@ -51,7 +35,7 @@ namespace NBMFilteringService
              */
             if (sms)
             {
-                foreach(var dict in MessageProcess.textList)
+                foreach(var dict in DAO.textList)
                 {
                     if (body.Contains(dict.Key))
                     {
@@ -68,11 +52,16 @@ namespace NBMFilteringService
             }
 
             /*
-             * In the case algorithm was unable to detect either SMS, Email or Tweet
+             * Sanitising Email Message
              */
-            if(!sms && !email && !tweet)
+            if (email)
             {
-                body = "Unable to categorise message into a type";
+                Email email = new Email();
+                email.ID = id;
+                email.Sender = sender;
+                email.Subject = subject;
+                email.Text = body;
+                DAO.emailList.Add(email);
             }
         }
 
