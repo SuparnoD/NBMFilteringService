@@ -8,13 +8,13 @@ namespace NBMFilteringService
 {
     class Message
     {
-        private string header;
+        private string id;
         private string sender;
         private string text;
 
-        public Message(string header, string sender, string text)
+        public Message(string id, string sender, string text)
         {
-            this.header = header;
+            this.id = id;
             this.sender = sender;
             this.text = text;
         }
@@ -24,10 +24,10 @@ namespace NBMFilteringService
 
         }
 
-        public string Header
+        public string ID
         {
-            get { return header; }
-            set { header = value; }
+            get { return id; }
+            set { id = value; }
         }
 
         public string Sender

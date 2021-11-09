@@ -24,15 +24,41 @@ namespace NBMFilteringService
         public MainWindow()
         {
             InitializeComponent();
-            DetectionAlgo.LoadDict();
+            MessageProcess.LoadDict();
         }
 
-        private void subBtn_Click(object sender, RoutedEventArgs e)
+        private void addBtn_Click(object sender, RoutedEventArgs e)
         {
-            string body = msgBody.Text;
-            DetectionAlgo.CategoriseMessage(body);
-            MessageBox.Show(DetectionAlgo.SanitiseMessage(body));
-            DetectionAlgo.ResetType();
+            NewMessage newMessage = new NewMessage();
+            newMessage.Show();
+        }
+
+        private void SMSListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message ID",
+                DisplayMemberBinding = new Binding("ID")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Sender",
+                DisplayMemberBinding = new Binding("Sender")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Subject",
+                DisplayMemberBinding = new Binding("Subject")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Message Body",
+                DisplayMemberBinding = new Binding("Text")
+            });
+
+            listView.ItemsSource = DAO.smsList;
         }
     }
 }

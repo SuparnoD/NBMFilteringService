@@ -10,7 +10,7 @@ namespace NBMFilteringService
     {
         private string subject;
 
-        public Email(string header, string subject, string sender, string text) : base(header, sender, text)
+        public Email(string id, string subject, string sender, string text) : base(id, sender, text)
         {
             this.subject = subject;
         }

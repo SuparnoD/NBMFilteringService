@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class DetectionAlgo
+    class MessageProcess
     {
         public static Dictionary<string, string> textList = new Dictionary<string, string>();
         private static bool sms = false;
@@ -18,37 +18,40 @@ namespace NBMFilteringService
         public static void LoadDict()
         {
             var dict = File.ReadLines(AppDomain.CurrentDomain.BaseDirectory + "textwords.csv").Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
-            DetectionAlgo.textList = dict;
+            MessageProcess.textList = dict;
         }
 
-        public static void CategoriseMessage(String body)
+        public static void CategoriseMessage(string id)
         {
-            /*
-             * Detecting SMS Message
-             */
-            foreach (var dict in DetectionAlgo.textList)
+            if (id.StartsWith("S"))
             {
-                if (body.Contains(dict.Key))
-                {
-                    if(body.Length <= 140)
-                    {
-                        sms = true;
-                    }
-                } else if(body.Length <= 140)
-                {
-                    sms = true;
-                }
+                sms = true;
+            } else if (id.StartsWith("E"))
+            {
+                /*Email email = new Email();
+                email.ID = id;
+                email.Sender = sender;
+                email.Subject = subject;
+                email.Text = body;
+                DAO.emailList.Add(email);*/
+            } else if (id.StartsWith("T"))
+            {
+                /*Tweet tweet = new Tweet();
+                tweet.ID = id;
+                tweet.Sender = sender;
+                tweet.Text = body;
+                DAO.tweetList.Add(tweet);*/
             }
         }
 
-        public static string SanitiseMessage(String body)
+        public static void SanitiseMessage(string id, string sender, string subject, string body)
         {
             /*
              * Sanitising SMS Message
              */
             if (sms)
             {
-                foreach(var dict in DetectionAlgo.textList)
+                foreach(var dict in MessageProcess.textList)
                 {
                     if (body.Contains(dict.Key))
                     {
@@ -56,7 +59,12 @@ namespace NBMFilteringService
                         body = body.Replace(dict.Key, replacement);
                     }
                 }
-                body = "SMS: " + body;
+                SMS sms = new SMS();
+                sms.ID = id;
+                sms.Sender = sender;
+                sms.Subject = subject;
+                sms.Text = body;
+                DAO.smsList.Add(sms);
             }
 
             /*
@@ -66,7 +74,6 @@ namespace NBMFilteringService
             {
                 body = "Unable to categorise message into a type";
             }
-            return body;
         }
 
         /*

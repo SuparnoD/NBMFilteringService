@@ -8,7 +8,7 @@ namespace NBMFilteringService
 {
     class Tweet : Message
     {
-        public Tweet(string header, string sender, string text) : base(header, sender, text)
+        public Tweet(string id, string sender, string text) : base(id, sender, text)
         {
 
         }

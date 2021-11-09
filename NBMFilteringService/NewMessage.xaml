@@ -1,0 +1,21 @@
+﻿<Window x:Class="NBMFilteringService.NewMessage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NBMFilteringService"
+        mc:Ignorable="d"
+        Title="NewMessage" Height="350" Width="405">
+    <Grid>
+        <TextBox x:Name="idBox" HorizontalAlignment="Left" Height="23" Margin="10,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="158"/>
+        <TextBox x:Name="senderBox" HorizontalAlignment="Left" Height="23" Margin="212,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="158"/>
+        <TextBox x:Name="subjectBox" HorizontalAlignment="Left" Height="23" Margin="10,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="360"/>
+        <TextBox x:Name="messageBox" HorizontalAlignment="Left" Height="118" Margin="10,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="360"/>
+        <Label x:Name="IDlab" Content="Message ID" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="senderLab" Content="Sender" HorizontalAlignment="Left" Margin="212,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.506,1.655"/>
+        <Label x:Name="subjectLab" Content="Subject" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="messageLab" Content="Message" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="addBtn" Content="Add Message" HorizontalAlignment="Left" Margin="284,266,0,0" VerticalAlignment="Top" Width="86" Height="45" Click="addBtn_Click"/>
+
+    </Grid>
+</Window>

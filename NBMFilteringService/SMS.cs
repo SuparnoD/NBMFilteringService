@@ -8,14 +8,22 @@ namespace NBMFilteringService
 {
     class SMS : Message
     {
-        public SMS(string header, string sender, string text) : base(header, sender, text)
-        {
+        private string subject;
 
+        public SMS(string id, string subject, string sender, string text) : base(id, sender, text)
+        {
+            this.subject = subject;
         }
 
         public SMS()
         {
 
+        }
+
+        public string Subject
+        {
+            get { return subject; }
+            set { subject = value; }
         }
     }
 }
