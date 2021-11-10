@@ -22,8 +22,10 @@ namespace NBMFilteringService
         public NewMessage()
         {
             InitializeComponent();
+            validateMessage();
             errorText.Visibility = Visibility.Hidden;
             SIRCheck.Visibility = Visibility.Hidden;
+            addBtn.IsEnabled = false;
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -60,7 +62,8 @@ namespace NBMFilteringService
                 messageBox.IsEnabled = false;
                 addBtn.IsEnabled = false;
                 errorText.Visibility = Visibility.Visible;
-            }else
+            }
+            else
             {
                 errorText.Visibility = Visibility.Hidden;
                 senderBox.IsEnabled = true;
@@ -69,16 +72,19 @@ namespace NBMFilteringService
                 addBtn.IsEnabled = true;
             }
 
-            // ensures ID is exactly 10 characters
-            if (id.Length != 10)
+            if(id.StartsWith("S") || id.StartsWith("E") || id.StartsWith("T"))
             {
-                errorText.Text = "ID should start with S, E or T followed by 9 numeric characters";
-                errorText.Visibility = Visibility.Visible;
-                addBtn.IsEnabled = false;
-            } else
-            {
-                errorText.Visibility = Visibility.Hidden;
-                addBtn.IsEnabled = true;
+                if (id.Length != 10)
+                {
+                    errorText.Text = "ID should start with S, E or T followed by 9 numeric characters";
+                    errorText.Visibility = Visibility.Visible;
+                    addBtn.IsEnabled = false;
+                }
+                else
+                {
+                    errorText.Visibility = Visibility.Hidden;
+                    addBtn.IsEnabled = true;
+                }
             }
 
             // if message type is of tweet, disable the subject field, else keep it enabled
@@ -119,7 +125,7 @@ namespace NBMFilteringService
                 {
                     addBtn.IsEnabled = false;
                     errorText.Visibility = Visibility.Visible;
-                    errorText.Text = "Email subjects max limit is 140 chars. Message text max limit is 1028 chars.";
+                    errorText.Text = "Email subjects max limit is 20 chars. Message text max limit is 1028 chars.";
                 } else
                 {
                     addBtn.IsEnabled = true;

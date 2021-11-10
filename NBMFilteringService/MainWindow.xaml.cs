@@ -111,5 +111,16 @@ namespace NBMFilteringService
 
             listView.ItemsSource = DAO.tweetList;
         }
+
+        private void quarantineBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "URL",
+            });
+            listView.ItemsSource = DAO.quarantineList;
+        }
     }
 }

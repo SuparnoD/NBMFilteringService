@@ -16,6 +16,7 @@ namespace NBMFilteringService
 
         public static void CategoriseMessage(string id)
         {
+            id = id.ToUpper();
             if (id.StartsWith("S"))
             {
                 sms = true;
@@ -56,6 +57,38 @@ namespace NBMFilteringService
              */
             if (email)
             {
+                string replacement = "<URL Quarantined>";
+
+                // if email contains URL, replace the URL with <URL Quarantined> and add the URL to the quarantine list
+                Regex rgx = new Regex(@"www.[^\s]+");
+                foreach(Match m in rgx.Matches(body))
+                {
+                    DAO.quarantineList.Add(m.Value);
+                }
+
+                Regex rgx1 = new Regex(@"http[^\s]+");
+                foreach (Match m in rgx1.Matches(body))
+                {
+                    DAO.quarantineList.Add(m.Value);
+                }
+
+                Regex rgx2 = new Regex(@"https[^\s]+");
+                foreach (Match m in rgx2.Matches(body))
+                {
+                    DAO.quarantineList.Add(m.Value);
+                }
+
+                Regex rgx3 = new Regex(@".com[^\s]+");
+                foreach (Match m in rgx3.Matches(body))
+                {
+                    DAO.quarantineList.Add(m.Value);
+                }
+
+                body = Regex.Replace(body, @"www.[^\s]+", replacement);
+                body = Regex.Replace(body, @"http[^\s]+", replacement);
+                body = Regex.Replace(body, @"https[^\s]+", replacement);
+                body = Regex.Replace(body, @".com[^\s]+", replacement);
+
                 Email email = new Email();
                 email.ID = id;
                 email.Sender = sender;
