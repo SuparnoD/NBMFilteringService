@@ -57,7 +57,6 @@ namespace NBMFilteringService
                 Header = "Message Body",
                 DisplayMemberBinding = new Binding("Text")
             });
-
             listView.ItemsSource = DAO.smsList;
         }
 
@@ -85,7 +84,6 @@ namespace NBMFilteringService
                 Header = "Message Body",
                 DisplayMemberBinding = new Binding("Text")
             });
-
             listView.ItemsSource = DAO.emailList;
         }
 
@@ -108,7 +106,6 @@ namespace NBMFilteringService
                 Header = "Message Body",
                 DisplayMemberBinding = new Binding("Text")
             });
-
             listView.ItemsSource = DAO.tweetList;
         }
 
@@ -121,6 +118,23 @@ namespace NBMFilteringService
                 Header = "URL",
             });
             listView.ItemsSource = DAO.quarantineList;
+        }
+
+        private void hashtagListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Hashtag",
+                DisplayMemberBinding = new Binding("TagName")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Count",
+                DisplayMemberBinding = new Binding("Count")
+            });
+            listView.ItemsSource = DAO.groupedHashtagList;
         }
     }
 }

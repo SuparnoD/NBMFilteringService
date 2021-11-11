@@ -96,6 +96,30 @@ namespace NBMFilteringService
                 email.Text = body;
                 DAO.emailList.Add(email);
             }
+
+            /*
+             * Sanitising Tweet Message
+             */
+            if (tweet)
+            {
+                Regex rgx = new Regex(@"#[^\s]+");
+                foreach (Match m in rgx.Matches(body))
+                {
+                    DAO.hashtagList.Add(m.Value);
+                }
+
+                Regex rgx1 = new Regex(@"@[^\s]+");
+                foreach (Match m in rgx1.Matches(body))
+                {
+                    //DAO.mentionsList.Add(m.Value);
+                }
+
+                Tweet tweet = new Tweet();
+                tweet.ID = id;
+                tweet.Sender = sender;
+                tweet.Text = body;
+                DAO.tweetList.Add(tweet);
+            }
         }
 
         /*
@@ -106,6 +130,20 @@ namespace NBMFilteringService
             sms = false;
             email = false;
             tweet = false;
+        }
+
+        public static void GroupHashtagList()
+        {
+            var q = DAO.hashtagList.GroupBy(x => x)
+                                   .Select(g => new { Value = g.Key, Count = g.Count() })
+                                   .OrderByDescending(x => x.Count);
+            foreach(var x in q)
+            {
+                Tag t = new Tag(x.Value, x.Count);
+                DAO.groupedHashtagList.Add(t);
+            }
+
+            DAO.groupedHashtagList = DAO.groupedHashtagList.GroupBy(x => x.TagName).Select(g => g.Last()).ToList();
         }
     }
 }

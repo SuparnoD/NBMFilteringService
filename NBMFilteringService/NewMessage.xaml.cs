@@ -25,7 +25,6 @@ namespace NBMFilteringService
             validateMessage();
             errorText.Visibility = Visibility.Hidden;
             SIRCheck.Visibility = Visibility.Hidden;
-            addBtn.IsEnabled = false;
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -35,10 +34,21 @@ namespace NBMFilteringService
             string subject = subjectBox.Text;
             string body = messageBox.Text;
 
-            MessageProcess.CategoriseMessage(id);
-            MessageProcess.SanitiseMessage(id, send, subject, body);
-            MessageProcess.ResetType();
-            this.Close();
+            id = id.ToUpper();
+            string id2 = id.Substring(1);
+            bool isNumeric = int.TryParse(id2, out _);
+
+            if((id.Length != 10) || (!isNumeric))
+            {
+                MessageBox.Show("Error");
+            } else
+            {
+                MessageProcess.CategoriseMessage(id);
+                MessageProcess.SanitiseMessage(id, send, subject, body);
+                MessageProcess.ResetType();
+                MessageProcess.GroupHashtagList();
+                this.Close();
+            }
         }
 
         private void idBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -70,21 +80,6 @@ namespace NBMFilteringService
                 subjectBox.IsEnabled = true;
                 messageBox.IsEnabled = true;
                 addBtn.IsEnabled = true;
-            }
-
-            if(id.StartsWith("S") || id.StartsWith("E") || id.StartsWith("T"))
-            {
-                if (id.Length != 10)
-                {
-                    errorText.Text = "ID should start with S, E or T followed by 9 numeric characters";
-                    errorText.Visibility = Visibility.Visible;
-                    addBtn.IsEnabled = false;
-                }
-                else
-                {
-                    errorText.Visibility = Visibility.Hidden;
-                    addBtn.IsEnabled = true;
-                }
             }
 
             // if message type is of tweet, disable the subject field, else keep it enabled

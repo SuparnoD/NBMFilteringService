@@ -15,8 +15,11 @@ namespace NBMFilteringService
         public static List<Tweet> tweetList = new List<Tweet>();
         public static List<string> quarantineList = new List<string>();
         public static List<string> SIRList = new List<string>();
+
         public static List<string> hashtagList = new List<string>();
-        public static List<string> mentionsList = new List<string>();
+        public static List<Tag> mentionsList = new List<Tag>();
+        public static List<Tag> groupedHashtagList = new List<Tag>();
+        public static List<Tag> groupedMentionsList = new List<Tag>();
 
         public static void LoadDict()
         {
