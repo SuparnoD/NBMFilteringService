@@ -25,6 +25,7 @@ namespace NBMFilteringService
         {
             InitializeComponent();
             DAO.LoadDict();
+            DAO.populateIncidentList();
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -135,6 +136,50 @@ namespace NBMFilteringService
                 DisplayMemberBinding = new Binding("Count")
             });
             listView.ItemsSource = DAO.groupedHashtagList;
+        }
+
+        private void mentionsListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Hashtag",
+                DisplayMemberBinding = new Binding("TagName")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Count",
+                DisplayMemberBinding = new Binding("Count")
+            });
+            listView.ItemsSource = DAO.groupedMentionsList;
+        }
+
+        private void SIRListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var gridView = new GridView();
+            this.listView.View = gridView;
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Sort Code",
+                DisplayMemberBinding = new Binding("SortCode")
+            });
+            gridView.Columns.Add(new GridViewColumn
+            {
+                Header = "Nature of Incident",
+                DisplayMemberBinding = new Binding("NatureOfIncident")
+            });
+            listView.ItemsSource = DAO.SIRList;
+        }
+
+        private void exportBtn_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                MessageProcess.setFilePath(dialog.SelectedPath);
+            }
+
         }
     }
 }

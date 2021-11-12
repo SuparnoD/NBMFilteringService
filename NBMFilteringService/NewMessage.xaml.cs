@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,17 +38,62 @@ namespace NBMFilteringService
             id = id.ToUpper();
             string id2 = id.Substring(1);
             bool isNumeric = int.TryParse(id2, out _);
-
             if((id.Length != 10) || (!isNumeric))
             {
-                MessageBox.Show("Error");
+                MessageBox.Show("Error: ID should start with S, E or T followed by 9 numeric characters");
+            } else if (MessageProcess.isSIR())
+            {
+                var sc = body.Split('\n');
+                string sortCode = sc[0].ToString().Substring(10);
+                string scDup = sortCode;
+                sortCode = sortCode.Replace("-", string.Empty);
+                Regex.Replace(sortCode, @"\s+", "");
+                bool scIsNumeric = int.TryParse(sortCode, out _);
+                bool messageProcessed = false;
+
+                var noi = body.Split((char)('\n'));
+                string natureOfIncident = noi[1].ToString().Substring(19).ToLower();
+
+                if((sortCode.Length != 7) || (!scIsNumeric))
+                {
+                    MessageBox.Show("Error: Sort Code in incorrect format [11-11-11]");
+                } else
+                {
+                    foreach(string str in DAO.incidentsList)
+                    {
+                        if (natureOfIncident.Contains(str))
+                        {
+                            if (!messageProcessed)
+                            {
+                                MessageProcess.CategoriseMessage(id);
+                                MessageProcess.SanitiseMessage(id, send, subject, body);
+                                MessageProcess.ResetType();
+                            }
+                            SIR sir = new SIR(scDup, str);
+                            DAO.SIRList.Add(sir);
+                            this.Close();
+                        }
+                        else {
+                            errorText.Visibility = Visibility.Visible;
+                            errorText.Text = "Error: Unable to detect the nature of incident";
+                        }
+                    }
+                }
             } else
             {
-                MessageProcess.CategoriseMessage(id);
-                MessageProcess.SanitiseMessage(id, send, subject, body);
-                MessageProcess.ResetType();
-                MessageProcess.GroupHashtagList();
-                this.Close();
+                if ((id.Length != 10) || (!isNumeric))
+                {
+                    MessageBox.Show("Error: ID should start with S, E or T followed by 9 numeric characters");
+                }
+                else
+                {
+                    MessageProcess.CategoriseMessage(id);
+                    MessageProcess.SanitiseMessage(id, send, subject, body);
+                    MessageProcess.ResetType();
+                    MessageProcess.GroupHashtagList();
+                    MessageProcess.GroupMentionsList();
+                    this.Close();
+                }
             }
         }
 
@@ -131,6 +177,7 @@ namespace NBMFilteringService
 
         private void SIRCheck_Checked(object sender, RoutedEventArgs e)
         {
+            MessageProcess.CheckSIR();
             subjectBox.Text = "SIR dd/mm/yy";
             messageBox.Text = "Sort Code: \n" +
                 "Nature of Incident: ";
@@ -138,6 +185,7 @@ namespace NBMFilteringService
 
         private void SIRCheck_Unchecked(object sender, RoutedEventArgs e)
         {
+            MessageProcess.uncheckSIR();
             subjectBox.Clear();
             messageBox.Clear();
         }

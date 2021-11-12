@@ -13,6 +13,8 @@ namespace NBMFilteringService
         private static bool sms = false;
         private static bool email = false;
         private static bool tweet = false;
+        private static bool sirChecked = false;
+        private static string filePath = null;
 
         public static void CategoriseMessage(string id)
         {
@@ -111,7 +113,7 @@ namespace NBMFilteringService
                 Regex rgx1 = new Regex(@"@[^\s]+");
                 foreach (Match m in rgx1.Matches(body))
                 {
-                    //DAO.mentionsList.Add(m.Value);
+                    DAO.mentionsList.Add(m.Value);
                 }
 
                 Tweet tweet = new Tweet();
@@ -142,8 +144,51 @@ namespace NBMFilteringService
                 Tag t = new Tag(x.Value, x.Count);
                 DAO.groupedHashtagList.Add(t);
             }
-
             DAO.groupedHashtagList = DAO.groupedHashtagList.GroupBy(x => x.TagName).Select(g => g.Last()).ToList();
+        }
+
+        public static void GroupMentionsList()
+        {
+            var q = DAO.mentionsList.GroupBy(x => x)
+                                   .Select(g => new { Value = g.Key, Count = g.Count() })
+                                   .OrderByDescending(x => x.Count);
+            foreach(var x in q)
+            {
+                Tag t = new Tag(x.Value, x.Count);
+                DAO.groupedMentionsList.Add(t);
+            }
+            DAO.groupedMentionsList = DAO.groupedMentionsList.GroupBy(x => x.TagName).Select(g => g.Last()).ToList();
+        }
+
+        public static void CheckSIR()
+        {
+            sirChecked = true;
+        }
+
+        public static void uncheckSIR()
+        {
+            sirChecked = false;
+        }
+
+        public static bool isSIR()
+        {
+            if (sirChecked)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
+        public static void setFilePath(string path)
+        {
+            filePath = path;
+        }
+
+        public static string getFilePath()
+        {
+            return filePath;
         }
     }
 }
