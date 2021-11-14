@@ -26,6 +26,8 @@ namespace NBMFilteringService
             InitializeComponent();
             DAO.LoadDict();
             DAO.populateIncidentList();
+            addBtn.IsEnabled = false;
+            errorText.Text = "SELECT EXPORT DIRECTORY";
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -178,6 +180,12 @@ namespace NBMFilteringService
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 MessageProcess.setFilePath(dialog.SelectedPath);
+            }
+
+            if (!String.IsNullOrEmpty(MessageProcess.getFilePath()))
+            {
+                addBtn.IsEnabled = true;
+                errorText.Visibility = Visibility.Hidden;
             }
 
         }

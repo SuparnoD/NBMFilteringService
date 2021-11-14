@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,6 +53,17 @@ namespace NBMFilteringService
                 sms.Subject = subject;
                 sms.Text = body;
                 DAO.smsList.Add(sms);
+
+                string path = getFilePath() + "/sms.json";
+
+                string json = JsonConvert.SerializeObject(sms);
+                if (File.Exists(path))
+                {
+                    File.AppendAllText(path, json + Environment.NewLine);
+                } else
+                {
+                    File.WriteAllText(path, json + Environment.NewLine);
+                }
             }
 
             /*
@@ -97,6 +109,18 @@ namespace NBMFilteringService
                 email.Subject = subject;
                 email.Text = body;
                 DAO.emailList.Add(email);
+
+                string path = getFilePath() + "/email.json";
+
+                string json = JsonConvert.SerializeObject(email);
+                if (File.Exists(path))
+                {
+                    File.AppendAllText(path, json + Environment.NewLine);
+                }
+                else
+                {
+                    File.WriteAllText(path, json + Environment.NewLine);
+                }
             }
 
             /*
@@ -116,11 +140,32 @@ namespace NBMFilteringService
                     DAO.mentionsList.Add(m.Value);
                 }
 
+                foreach (var dict in DAO.textList)
+                {
+                    if (body.Contains(dict.Key))
+                    {
+                        string replacement = dict.Key + " <" + dict.Value + ">";
+                        body = body.Replace(dict.Key, replacement);
+                    }
+                }
+
                 Tweet tweet = new Tweet();
                 tweet.ID = id;
                 tweet.Sender = sender;
                 tweet.Text = body;
                 DAO.tweetList.Add(tweet);
+
+                string path = getFilePath() + "/tweet.json";
+
+                string json = JsonConvert.SerializeObject(tweet);
+                if (File.Exists(path))
+                {
+                    File.AppendAllText(path, json + Environment.NewLine);
+                }
+                else
+                {
+                    File.WriteAllText(path, json + Environment.NewLine);
+                }
             }
         }
 
