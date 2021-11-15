@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class Tweet : Message
+    public class Tweet : Message
     {
         public Tweet(string id, string sender, string text) : base(id, sender, text)
         {

@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Xml.Serialization;
 
 namespace NBMFilteringService
 {
@@ -43,6 +42,53 @@ namespace NBMFilteringService
             incidentsList.Add("suspicious incident");
             incidentsList.Add("intelligence");
             incidentsList.Add("cash loss");
+        }
+        public static void SMSDeserializer(string filePath)
+        {
+            XmlSerializer deserialiser = new XmlSerializer(typeof(List<SMS>));
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+            else
+            {
+                using (FileStream perFS = File.OpenRead(filePath))
+                {
+                    DAO.smsList = (List<SMS>)deserialiser.Deserialize(perFS);
+                }
+            }
+        }
+
+        public static void EmailDeserializer(string filePath)
+        {
+            XmlSerializer deserialiser = new XmlSerializer(typeof(List<Email>));
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+            else
+            {
+                using (FileStream perFS = File.OpenRead(filePath))
+                {
+                    DAO.emailList = (List<Email>)deserialiser.Deserialize(perFS);
+                }
+            }
+        }
+
+        public static void TweetDeserializer(string filePath)
+        {
+            XmlSerializer deserialiser = new XmlSerializer(typeof(List<Tweet>));
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+            else
+            {
+                using (FileStream perFS = File.OpenRead(filePath))
+                {
+                    DAO.tweetList = (List<Tweet>)deserialiser.Deserialize(perFS);
+                }
+            }
         }
     }
 }

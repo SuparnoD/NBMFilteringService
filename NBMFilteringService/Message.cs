@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class Message
+    public class Message
     {
         private string id;
         private string sender;

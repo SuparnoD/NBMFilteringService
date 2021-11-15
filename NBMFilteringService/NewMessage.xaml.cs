@@ -103,7 +103,7 @@ namespace NBMFilteringService
                 }
             } catch (Exception ex)
             {
-                MessageBox.Show("ERROR: " + ex.ToString());
+                MessageBox.Show("ERROR: Enter 'E' in Sender, try selecting then deselecting SIR checkbox");
             }
            
         }

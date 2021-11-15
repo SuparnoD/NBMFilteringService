@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace NBMFilteringService
 {
-    class SMS : Message
+    public class SMS : Message
     {
         private string subject;
 

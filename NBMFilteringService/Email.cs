@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class Email : Message
+    public class Email : Message
     {
         private string subject;
 

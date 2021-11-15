@@ -33,7 +33,7 @@
         <Button x:Name="hashtagListBtn" Content="Hashtag List" HorizontalAlignment="Left" Margin="29,295,0,0" VerticalAlignment="Top" Width="103" Height="26" Click="hashtagListBtn_Click"/>
         <Button x:Name="mentionsListBtn" Content="Mentions List" HorizontalAlignment="Left" Margin="29,326,0,0" VerticalAlignment="Top" Width="103" Height="26" Click="mentionsListBtn_Click"/>
         <Button x:Name="exportBtn" Content="SELECT EXPORT DIR" HorizontalAlignment="Left" Margin="416,370,0,0" VerticalAlignment="Top" Width="140" Height="41" FontWeight="Bold" Click="exportBtn_Click"/>
-        <Button x:Name="importBtn" Content="IMPORT" HorizontalAlignment="Left" Margin="247,370,0,0" VerticalAlignment="Top" Width="140" Height="41" FontWeight="Bold"/>
+        <Button x:Name="importBtn" Content="IMPORT" HorizontalAlignment="Left" Margin="247,370,0,0" VerticalAlignment="Top" Width="140" Height="41" FontWeight="Bold" Click="importBtn_Click"/>
         <TextBlock x:Name="errorText" Margin="10,370,0,0" TextWrapping="Wrap" Text="Error Message" Height="41" Width="211" Background="Red" Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Padding="10,7,0,0"/>
 
     </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -186,6 +187,38 @@ namespace NBMFilteringService
             {
                 addBtn.IsEnabled = true;
                 errorText.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+        private void importBtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                InitialDirectory = @"C:\",
+                Title = "Import XML File",
+
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "xml",
+                Filter = "xml files (*.xml)|*.xml",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+
+            openFileDialog1.ShowDialog();
+            try
+            {
+                DAO.SMSDeserializer(openFileDialog1.FileName);
+                DAO.EmailDeserializer(openFileDialog1.FileName);
+                DAO.TweetDeserializer(openFileDialog1.FileName);
+            } catch (Exception error)
+            {
+                MessageBox.Show("Unable to process XML document. Please make sure the document is formatted correctly.");
             }
 
         }
