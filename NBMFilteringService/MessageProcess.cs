@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿/*
+ * AUTHOR: Suparna Deb
+ * DATE LAST MODIFIED: 15/11/2021
+ * FILE NAME: MessageProcess.cs
+ * PURPOSE: Deals with categorisation and sanitisation of a message
+ * LAYER: Business
+ */
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class MessageProcess
+    public class MessageProcess
     {
         private static bool sms = false;
         private static bool email = false;
@@ -17,6 +24,9 @@ namespace NBMFilteringService
         private static bool sirChecked = false;
         private static string filePath = null;
 
+        /*
+         * Categorise messages according to what the ID starts with
+         */
         public static void CategoriseMessage(string id)
         {
             id = id.ToUpper();
@@ -32,6 +42,9 @@ namespace NBMFilteringService
             } 
         }
 
+        /*
+         * Sanitising input messages
+         */
         public static void SanitiseMessage(string id, string sender, string subject, string body)
         {
             /*
@@ -54,15 +67,23 @@ namespace NBMFilteringService
                 sms.Text = body;
                 DAO.smsList.Add(sms);
 
-                string path = getFilePath() + "/sms.json";
+                try
+                {
+                    //Serialise into JSON
+                    string path = getFilePath() + "/sms.json";
 
-                string json = JsonConvert.SerializeObject(sms);
-                if (File.Exists(path))
+                    string json = JsonConvert.SerializeObject(sms);
+                    if (File.Exists(path))
+                    {
+                        File.AppendAllText(path, json + Environment.NewLine);
+                    }
+                    else
+                    {
+                        File.WriteAllText(path, json + Environment.NewLine);
+                    }
+                } catch (Exception e)
                 {
-                    File.AppendAllText(path, json + Environment.NewLine);
-                } else
-                {
-                    File.WriteAllText(path, json + Environment.NewLine);
+
                 }
             }
 
@@ -98,6 +119,7 @@ namespace NBMFilteringService
                     DAO.quarantineList.Add(m.Value);
                 }
 
+                // Replace whole word containing 'www.', 'http', 'https' and '.com' with '<URL Quarantined>'
                 body = Regex.Replace(body, @"www.[^\s]+", replacement);
                 body = Regex.Replace(body, @"http[^\s]+", replacement);
                 body = Regex.Replace(body, @"https[^\s]+", replacement);
@@ -112,14 +134,21 @@ namespace NBMFilteringService
 
                 string path = getFilePath() + "/email.json";
 
-                string json = JsonConvert.SerializeObject(email);
-                if (File.Exists(path))
+                try
                 {
-                    File.AppendAllText(path, json + Environment.NewLine);
-                }
-                else
+                    // Serialise into JSON
+                    string json = JsonConvert.SerializeObject(email);
+                    if (File.Exists(path))
+                    {
+                        File.AppendAllText(path, json + Environment.NewLine);
+                    }
+                    else
+                    {
+                        File.WriteAllText(path, json + Environment.NewLine);
+                    }
+                } catch (Exception e)
                 {
-                    File.WriteAllText(path, json + Environment.NewLine);
+
                 }
             }
 
@@ -128,6 +157,15 @@ namespace NBMFilteringService
              */
             if (tweet)
             {
+                foreach (var dict in DAO.textList)
+                {
+                    if (body.Contains(dict.Key))
+                    {
+                        string replacement = dict.Key + " <" + dict.Value + ">";
+                        body = body.Replace(dict.Key, replacement);
+                    }
+                }
+
                 Regex rgx = new Regex(@"#[^\s]+");
                 foreach (Match m in rgx.Matches(body))
                 {
@@ -140,15 +178,6 @@ namespace NBMFilteringService
                     DAO.mentionsList.Add(m.Value);
                 }
 
-                foreach (var dict in DAO.textList)
-                {
-                    if (body.Contains(dict.Key))
-                    {
-                        string replacement = dict.Key + " <" + dict.Value + ">";
-                        body = body.Replace(dict.Key, replacement);
-                    }
-                }
-
                 Tweet tweet = new Tweet();
                 tweet.ID = id;
                 tweet.Sender = sender;
@@ -157,14 +186,21 @@ namespace NBMFilteringService
 
                 string path = getFilePath() + "/tweet.json";
 
-                string json = JsonConvert.SerializeObject(tweet);
-                if (File.Exists(path))
+                try
                 {
-                    File.AppendAllText(path, json + Environment.NewLine);
-                }
-                else
+                    // Serialise into JSON
+                    string json = JsonConvert.SerializeObject(tweet);
+                    if (File.Exists(path))
+                    {
+                        File.AppendAllText(path, json + Environment.NewLine);
+                    }
+                    else
+                    {
+                        File.WriteAllText(path, json + Environment.NewLine);
+                    }
+                } catch (Exception e)
                 {
-                    File.WriteAllText(path, json + Environment.NewLine);
+
                 }
             }
         }
@@ -179,6 +215,9 @@ namespace NBMFilteringService
             tweet = false;
         }
 
+        /*
+         * Groups the hashtag list by removing duplicates and increasing count
+         */
         public static void GroupHashtagList()
         {
             var q = DAO.hashtagList.GroupBy(x => x)
@@ -192,6 +231,9 @@ namespace NBMFilteringService
             DAO.groupedHashtagList = DAO.groupedHashtagList.GroupBy(x => x.TagName).Select(g => g.Last()).ToList();
         }
 
+        /*
+         * Groups the mentions list by removing duplicates and increasing count
+         */
         public static void GroupMentionsList()
         {
             var q = DAO.mentionsList.GroupBy(x => x)
@@ -224,6 +266,12 @@ namespace NBMFilteringService
             {
                 return false;
             }
+        }
+
+        public static void addSIR(string sc, string noi)
+        {
+            SIR sir = new SIR(sc, noi);
+            DAO.SIRList.Add(sir);
         }
 
         public static void setFilePath(string path)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class SIR
+    public class SIR
     {
         private string sortCode;
         private string natureOfIncident;

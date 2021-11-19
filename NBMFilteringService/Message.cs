@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * AUTHOR: Suparna Deb
+ * DATE LAST MODIFIED: 15/11/2021
+ * FILE NAME: Message.cs
+ * PURPOSE: Message object class - acts as a base class for SMS, Email and Tweet
+ * LAYER: Business
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

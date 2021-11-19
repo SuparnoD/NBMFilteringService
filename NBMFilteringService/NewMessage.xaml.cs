@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NBMFilteringService
 {
@@ -73,8 +63,7 @@ namespace NBMFilteringService
                                     MessageProcess.SanitiseMessage(id, send, subject, body);
                                     MessageProcess.ResetType();
                                 }
-                                SIR sir = new SIR(scDup, str);
-                                DAO.SIRList.Add(sir);
+                                MessageProcess.addSIR(scDup, str);
                                 this.Close();
                             }
                             else
@@ -101,11 +90,12 @@ namespace NBMFilteringService
                         this.Close();
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("ERROR: Enter 'E' in Sender, try selecting then deselecting SIR checkbox");
             }
-           
+
         }
 
         private void idBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -144,26 +134,28 @@ namespace NBMFilteringService
             {
                 subjectBox.IsEnabled = false;
                 subjectBox.Clear();
-            } 
+            }
 
             // if message type is of email, present the option to flag as significant incident report
             if (id.StartsWith("E"))
             {
                 SIRCheck.Visibility = Visibility.Visible;
-            } else
+            }
+            else
             {
                 SIRCheck.Visibility = Visibility.Hidden;
             }
 
             // ensures that tweet/sms message body is within the 140 character limit. otherwise return error and disable the add button
-            if(id.StartsWith("S") || (id.StartsWith("T")))
+            if (id.StartsWith("S") || (id.StartsWith("T")))
             {
-                if(body.Length > 140)
+                if (body.Length > 140)
                 {
                     addBtn.IsEnabled = false;
                     errorText.Visibility = Visibility.Visible;
                     errorText.Text = "Tweet/SMS are a maximum of 140 characters";
-                } else
+                }
+                else
                 {
                     addBtn.IsEnabled = true;
                     errorText.Visibility = Visibility.Hidden;
@@ -173,12 +165,13 @@ namespace NBMFilteringService
             //ensures that email subject is within 20 character limit and email message body is within 1028 character limit. otherwise return error and disable the add button
             if (id.StartsWith("E"))
             {
-                if((subject.Length > 20) || (body.Length > 1028))
+                if ((subject.Length > 20) || (body.Length > 1028))
                 {
                     addBtn.IsEnabled = false;
                     errorText.Visibility = Visibility.Visible;
                     errorText.Text = "Email subjects max limit is 20 chars. Message text max limit is 1028 chars.";
-                } else
+                }
+                else
                 {
                     addBtn.IsEnabled = true;
                     errorText.Visibility = Visibility.Hidden;

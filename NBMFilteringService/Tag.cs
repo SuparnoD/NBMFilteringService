@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBMFilteringService
 {
-    class Tag
+    public class Tag
     {
         private string tagName;
         private int count = 1;
