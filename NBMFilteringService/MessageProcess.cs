@@ -247,16 +247,25 @@ namespace NBMFilteringService
             DAO.groupedMentionsList = DAO.groupedMentionsList.GroupBy(x => x.TagName).Select(g => g.Last()).ToList();
         }
 
+        /*
+         * Deals with the verification of SIR being (un)selected
+         */
         public static void CheckSIR()
         {
             sirChecked = true;
         }
 
+        /*
+         * Deals with the verification of SIR being (un)selected
+         */
         public static void uncheckSIR()
         {
             sirChecked = false;
         }
 
+        /*
+         * Deals with the verification of SIR being (un)selected
+         */
         public static bool isSIR()
         {
             if (sirChecked)
@@ -268,17 +277,26 @@ namespace NBMFilteringService
             }
         }
 
+        /*
+         * Registers SIR to SIRList
+         */
         public static void addSIR(string sc, string noi)
         {
             SIR sir = new SIR(sc, noi);
             DAO.SIRList.Add(sir);
         }
 
+        /*
+         * Set file path for (de)serialisation
+         */
         public static void setFilePath(string path)
         {
             filePath = path;
         }
 
+        /*
+         * Get file path for (de)serialisation
+         */
         public static string getFilePath()
         {
             return filePath;

@@ -1,4 +1,11 @@
-﻿using Microsoft.Win32;
+﻿/*
+ * AUTHOR: Suparna Deb
+ * DATE LAST MODIFIED: 26/11/2021
+ * FILE NAME: MainWindow.xaml.cs
+ * PURPOSE: Handles events in response to the user's interaction with window 'MainWindow'
+ * LAYER: Presentation
+ */
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +29,10 @@ namespace NBMFilteringService
     /// </summary>
     public partial class MainWindow : Window
     {
+        /*
+         * Populate the dictionary with abbreviations and its full form
+         * Populate incident list with the incidents
+         */
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +48,9 @@ namespace NBMFilteringService
             newMessage.Show();
         }
 
+        /*
+         * If SMS List btn clicked, populate list view with all the SMS objects in SMSList
+         */
         private void SMSListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -64,6 +78,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.smsList;
         }
 
+        /*
+         * If Email List btn clicked, populate list view with all the Email objects in EmailList
+         */
         private void EmailListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -91,6 +108,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.emailList;
         }
 
+        /*
+         * If Tweet List btn clicked, populate list view with all the Tweet objects in TweetList
+         */
         private void TweetListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -113,6 +133,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.tweetList;
         }
 
+        /*
+         * If Quarantine List btn clicked, populate list view with all the URL strings in quarantineList
+         */
         private void quarantineBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -124,6 +147,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.quarantineList;
         }
 
+        /*
+         * If Hashtag List btn clicked, populate list view with all the Tag objects in groupedHashtagList
+         */
         private void hashtagListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -141,6 +167,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.groupedHashtagList;
         }
 
+        /*
+         * If Mentions List btn clicked, populate list view with all the Tag objects in groupedMentionList
+         */
         private void mentionsListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -158,6 +187,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.groupedMentionsList;
         }
 
+        /*
+         * If SIR List btn clicked, populate list view with all the SIR objects in SIRList
+         */
         private void SIRListBtn_Click(object sender, RoutedEventArgs e)
         {
             var gridView = new GridView();
@@ -175,6 +207,9 @@ namespace NBMFilteringService
             listView.ItemsSource = DAO.SIRList;
         }
 
+        /*
+         * Allows user to set file path for message serialisation via UI
+         */
         private void exportBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
@@ -191,6 +226,9 @@ namespace NBMFilteringService
 
         }
 
+        /*
+         * Allows user to retrieve file for message deserialisation via UI
+         */
         private void importBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
@@ -214,11 +252,24 @@ namespace NBMFilteringService
             try
             {
                 DAO.SMSDeserializer(openFileDialog1.FileName);
-                DAO.EmailDeserializer(openFileDialog1.FileName);
-                DAO.TweetDeserializer(openFileDialog1.FileName);
             } catch (Exception error)
             {
-                MessageBox.Show("Unable to process XML document. Please make sure the document is formatted correctly.");
+            }
+
+            try
+            {
+                DAO.EmailDeserializer(openFileDialog1.FileName);
+            }
+            catch (Exception error)
+            {
+            }
+
+            try
+            {
+                DAO.TweetDeserializer(openFileDialog1.FileName);
+            }
+            catch (Exception error)
+            {
             }
 
         }

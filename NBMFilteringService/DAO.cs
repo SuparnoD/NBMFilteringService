@@ -66,7 +66,7 @@ namespace NBMFilteringService
             {
                 using (FileStream perFS = File.OpenRead(filePath))
                 {
-                    DAO.smsList = (List<SMS>)deserialiser.Deserialize(perFS);
+                    DAO.smsList.AddRange((List<SMS>)deserialiser.Deserialize(perFS));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace NBMFilteringService
             {
                 using (FileStream perFS = File.OpenRead(filePath))
                 {
-                    DAO.emailList = (List<Email>)deserialiser.Deserialize(perFS);
+                    DAO.emailList.AddRange((List<Email>)deserialiser.Deserialize(perFS));
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace NBMFilteringService
             {
                 using (FileStream perFS = File.OpenRead(filePath))
                 {
-                    DAO.tweetList = (List<Tweet>)deserialiser.Deserialize(perFS);
+                    DAO.tweetList.AddRange((List<Tweet>)deserialiser.Deserialize(perFS));
                 }
             }
         }

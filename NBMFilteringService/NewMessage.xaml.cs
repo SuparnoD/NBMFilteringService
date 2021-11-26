@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * AUTHOR: Suparna Deb
+ * DATE LAST MODIFIED: 26/11/2021
+ * FILE NAME: NewMessage.xaml.cs
+ * PURPOSE: Handles events in response to the user's interaction with window 'NewMessage'
+ * LAYER: Presentation
+ */
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +25,9 @@ namespace NBMFilteringService
             SIRCheck.Visibility = Visibility.Hidden;
         }
 
+        /*
+         * Validation after user clicks add message btn
+         */
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             try

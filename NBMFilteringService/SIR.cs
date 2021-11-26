@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * AUTHOR: Suparna Deb
+ * DATE LAST MODIFIED: 15/11/2021
+ * FILE NAME: SIR.cs
+ * PURPOSE: SIR object class
+ * LAYER: Business
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
