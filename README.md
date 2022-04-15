@@ -50,3 +50,9 @@ Nature of Incident: which will be one of the following
 Sort Code and Nature of Incident will be written to a SIR list. Any URLs contained in messages will be removed and written to a quarantine list and replaced by “” in the body of the message.
 
 **Tweets:** Textspeak abbreviations will be expanded (as in SMS messages above). Hashtags will be added to a hashtag list that will count the number of uses of each to produce a trending list. “Mentions”, i.e. embedded Twitter IDs will be added to a mentions list.
+
+## 
+<img width="619" alt="Screenshot 2022-04-16 at 00 03 05" src="https://user-images.githubusercontent.com/22820247/163651309-f511e57a-33e5-4efd-b538-39fbfbf3f80e.png">
+<img width="635" alt="Screenshot 2022-04-16 at 00 03 57" src="https://user-images.githubusercontent.com/22820247/163651318-14870669-a75c-440e-888b-8c9a8651c548.png">
+<img width="620" alt="Screenshot 2022-04-16 at 00 04 27" src="https://user-images.githubusercontent.com/22820247/163651329-d7618a21-4a53-40c6-a7bf-63295e5![Uploading Screenshot 2022-04-16 at 00.05.19.png…]()
+fdd56.png">
